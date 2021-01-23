@@ -9,7 +9,7 @@ use App\Ticket;
 class StakeLimitController extends Controller
 {
     public function index(Request $request){
-        $ticketMessage = $request->input();
+        $ticketMessage = $request->all();
 
         //Find the device from the request
         $device = Device::find($request['deviceId']);
@@ -47,7 +47,7 @@ class StakeLimitController extends Controller
             Ticket::create([
                 'id' => $ticket['id'],
                 'device_id' => $ticket['deviceId'],
-                'stake' => (double)$ticket['stake']
+                'stake' => (float)$ticket['stake']
             ]);
         }
     }

@@ -22,14 +22,14 @@ class Device extends Model
         return Config::first();
     }
 
-    private function ticketsFromTimePeriod(){
+    public function ticketsFromTimePeriod(){
         $config = Config::first();
         $from = now()->subMinutes($config['timeDuration']);
         $ticketsInTimePeriod = $this->tickets()->where('created_at', '>=', $from)->get();
         return $ticketsInTimePeriod;
     }
 
-    private function stakeSumFromPeriod($stake){
+    public function stakeSumFromPeriod($stake=0){
         $stakeSum = $stake;
         foreach($this->ticketsFromTimePeriod() as $ticket){
             $stakeSum += $ticket['stake'];
@@ -37,12 +37,12 @@ class Device extends Model
         return $stakeSum;
     }
 
-    public function isAboveLimit($stake){
+    public function isAboveLimit($stake=0){
         $config = $this->getConfig();
         return $this->stakeSumFromPeriod($stake) >= $config['stakeLimit'];
     }
 
-    public function isHot($stake){
+    public function isHot($stake=0){
         $config = $this->getConfig();
         $hotValue = ($config['hotAmountPctg']/100) * 1000;
         return $this->stakeSumFromPeriod($stake) >= $hotValue;

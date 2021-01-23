@@ -13,6 +13,6 @@ $factory->define(Ticket::class, function (Faker $faker) {
     return [
         'id' => $faker->uuid(),
         'device_id' => $devices[$faker->numberBetween(0, ($devicesLength - 1))],
-        'stake' =>  (double)$faker->numberBetween(10, 100)
+        'stake' =>  (float)$faker->numberBetween(10, 300)
     ];
 });
