@@ -18,7 +18,7 @@
         <div class="col">
             <strong> Block expires: </strong>
             <p class="font-weight-bold h3">
-                {{($device->isBlocked() ? $device->restrExpiry->diff(now())->format('%H:%I:%S') : 'Not blocked')}}
+                {{($device->isBlocked() ? ($device->restrExpiry === null ? 'Indefinite' : $device->restrExpiry->diff(now())->format('%H:%I:%S')) : 'Not blocked')}}
             </p>
         </div>
         <div class="col">

@@ -45,8 +45,8 @@
         <thead>
             <th>Device</th>
             <th>Tickets amount</th>
-            <th>Last({{$config->timeDuration}}) minutes</th>
-            <th>Amount last({{$config->timeDuration}}) minutes</th>
+            <th>Last({{$config->timeDuration}}) seconds</th>
+            <th>Amount last({{$config->timeDuration}}) seconds</th>
             <th>Current status</th>
             <th>Block expires in</th>
             <th>Detail</th>
@@ -61,7 +61,7 @@
                 <td>{{$device->stakeSumFromPeriod()}}</td>
                 <td>{{$device->isBlocked() ? 'Blocked' : ($device->isAboveLimit() ? 'Above Limit' : ($device->isHot() ? 'Hot' : 'OK'))}}
                 </td>
-                <td>{{($device->isBlocked() ? $device->restrExpiry->diff(now())->format('%H:%I:%S') : 'Not blocked')}}
+                <td>{{($device->isBlocked() ? ($device->restrExpiry === null ? 'Indefinite' : $device->restrExpiry->diff(now())->format('%H:%I:%S')) : 'Not blocked')}}
                 </td>
                 <td><a href="{{route('device.details', $device->id)}}">Details</a></td>
             </tr>

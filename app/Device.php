@@ -15,12 +15,19 @@ class Device extends Model
     public $timestamps = false;
 
     public function isBlocked(){
-        return $this->restrExpiry->gt(now());
+        if(isset($this->restrExpiry)){
+            return $this->restrExpiry->gt(now());
+        }
+        return true;
     }
 
     public function block(){
         $config = Config::first();
-        $this->restrExpiry = now()->addSeconds($config['restrExpiry']);
+        if($config['restrExpiry'] == 0){
+            $this->restrExpiry = null;
+        }else{
+            $this->restrExpiry = now()->addSeconds($config['restrExpiry']);
+        }
         $this->save();
     }
 
