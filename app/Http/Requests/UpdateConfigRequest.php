@@ -25,8 +25,8 @@ class UpdateConfigRequest extends FormRequest
     {
         return [
             'stakeLimit' => 'required|numeric|min:1|max:10000000',
-            'timeDuration' => 'required|numeric|min:5|max:3600',
-            'hotAmountPctg' => 'required|numeric|min:1|max:100',
+            'timeDuration' => 'required|numeric|min:5|max:86400',
+            'hotAmountPctg' => 'required|numeric|min:1|max:300',
             'restrExpiry' => 'required|numeric'
         ];
     }
