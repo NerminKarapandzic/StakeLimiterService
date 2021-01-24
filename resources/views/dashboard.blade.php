@@ -7,23 +7,31 @@
     <div class="card my-2 p-3" style="border-radius:15px;">
         <form method="POST" action="{{route('config.update')}}">
             @csrf
+            @method('POST')
             <div class="row">
                 <div class="col">
                     <div class="form-group">
                         <label>Stake Limit</label>
-                        <input type="number" class="form-control" value="{{$config->stakeLimit}}">
+                        <input type="number" name="stakeLimit" class="form-control" value="{{$config->stakeLimit}}">
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Time Duration(minutes)</label>
-                        <input type="number" class="form-control" value="{{$config->timeDuration}}">
+                        <label>Time Duration(seconds)</label>
+                        <input type="number" name="timeDuration" class="form-control" value="{{$config->timeDuration}}">
                     </div>
                 </div>
                 <div class=" col">
                     <div class="form-group">
                         <label>Percentage Amount(%)</label>
-                        <input type="number" class="form-control" value="{{$config->hotAmountPctg}}">
+                        <input type="number" name="hotAmountPctg" class="form-control"
+                            value="{{$config->hotAmountPctg}}">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Restriction time(seconds)</label>
+                        <input type="number" name="restrExpiry" class="form-control" value="{{$config->restrExpiry}}">
                     </div>
                 </div>
             </div>
@@ -39,7 +47,9 @@
             <th>Tickets amount</th>
             <th>Last({{$config->timeDuration}}) minutes</th>
             <th>Amount last({{$config->timeDuration}}) minutes</th>
-            <th>Status</th>
+            <th>Current status</th>
+            <th>Block expires in</th>
+            <th>Detail</th>
         </thead>
 
         <tbody>
@@ -49,8 +59,11 @@
                 <td>{{$device->tickets->count()}}</td>
                 <td>{{$device->ticketsFromTimePeriod()->count()}}</td>
                 <td>{{$device->stakeSumFromPeriod()}}</td>
-                <td>{{$device->isBlocked() || $device->isAboveLimit() ? 'Blocked' : ($device->isHot() ? 'Hot' : 'OK')}}
+                <td>{{$device->isBlocked() ? 'Blocked' : ($device->isAboveLimit() ? 'Above Limit' : ($device->isHot() ? 'Hot' : 'OK'))}}
                 </td>
+                <td>{{($device->isBlocked() ? $device->restrExpiry->diff(now())->format('%H:%I:%S') : 'Not blocked')}}
+                </td>
+                <td><a href="{{route('device.details', $device->id)}}">Details</a></td>
             </tr>
             @endforeach
         </tbody>

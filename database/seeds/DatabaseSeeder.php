@@ -19,7 +19,16 @@ class DatabaseSeeder extends Seeder
         DB::table('configs')->insert([
             'timeDuration' => Config::defaultTimeDuration(),
             'stakeLimit' => Config::defaultStakeLimit(),
-            'hotAmountPctg' => Config::defaultHotAmountPercentage()
+            'hotAmountPctg' => Config::defaultHotAmountPercentage(),
+            'restrExpiry' => Config::defaultRestrExpiry()
         ]);
+
+        //Devices are created with expiry set to now(), check all devices after tickets are created and block the ones which need to be blocked
+        $devices = Device::all();
+        foreach($devices as $device){
+            if($device->isAboveLimit()){
+                $device->block();
+            }
+        }
     }
 }

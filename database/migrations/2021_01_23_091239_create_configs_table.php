@@ -18,6 +18,7 @@ class CreateConfigsTable extends Migration
             $table->integer('timeDuration');
             $table->integer('stakeLimit');
             $table->integer('hotAmountPctg');
+            $table->integer('restrExpiry');
         });
     }
 

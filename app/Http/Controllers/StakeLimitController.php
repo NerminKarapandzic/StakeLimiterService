@@ -15,27 +15,23 @@ class StakeLimitController extends Controller
         $device = Device::find($request['deviceId']);
         //If doesn't exist add new device to database so it can be tracked in future
         if(!$device){
-            $device = Device::create([
-                'id' => $request['deviceId'],
-                'restrExpiry' => now()    
-            ]);
+           $device = $this->storeNewDevice($request['deviceId']);
         }
 
         //If device restrExpiry is more than current time, device is still blocked
         if($device->isBlocked()){
             return $this->sendResponse('BLOCKED');
         }else{
-            //device restrExpiry is null or less than current time, check sum of stakes received in last {config time}
+            //device is not already blocked, save the ticket for future tracking
+            $this->storeTicket($ticketMessage);
+            //if not blocked, check the sum of stakes in last {config time_duraton}
             //if stake sum >= {config limit} block the device
-            if($device->isAboveLimit($request['stake'])){
+            if($device->isAboveLimit()){
+                $device->block();
                 return $this->sendResponse('BLOCKED');
-            }else if($device->isHot($request['stake'])){
-                //stake sum >= {betAmountPctg} status hot, ticket won't be rejected so we store this ticket for further tracking
-                $this->storeTicket($ticketMessage);
+            }else if($device->isHot()){
                 return $this->sendResponse('HOT');
             }else{
-                //else status OK 
-                $this->storeTicket($ticketMessage);
                 return $this->sendResponse('OK');
             }
         }
@@ -50,6 +46,14 @@ class StakeLimitController extends Controller
                 'stake' => (float)$ticket['stake']
             ]);
         }
+    }
+
+    private function storeNewDevice($deviceId){
+        $device = Device::create([
+            'id' => $deviceId,
+            'restrExpiry' => now()    
+        ]);
+        return $device;
     }
 
     private function sendResponse($status){

@@ -18,36 +18,41 @@ class Device extends Model
         return $this->restrExpiry->gt(now());
     }
 
+    public function block(){
+        $config = Config::first();
+        $this->restrExpiry = now()->addSeconds($config['restrExpiry']);
+        $this->save();
+    }
+
     private function getConfig(){
         return Config::first();
     }
 
     public function ticketsFromTimePeriod(){
         $config = Config::first();
-        $from = now()->subMinutes($config['timeDuration']);
+        $from = now()->subSeconds(($config['timeDuration']));
         $ticketsInTimePeriod = $this->tickets()->where('created_at', '>=', $from)->get();
         return $ticketsInTimePeriod;
     }
 
-    public function stakeSumFromPeriod($stake=0){
-        $stakeSum = $stake;
+    public function stakeSumFromPeriod(){
+        $stakeSum = 0;
         foreach($this->ticketsFromTimePeriod() as $ticket){
             $stakeSum += $ticket['stake'];
         }
         return $stakeSum;
     }
 
-    public function isAboveLimit($stake=0){
+    public function isAboveLimit(){
         $config = $this->getConfig();
-        return $this->stakeSumFromPeriod($stake) >= $config['stakeLimit'];
+        return $this->stakeSumFromPeriod() >= $config['stakeLimit'];
     }
 
-    public function isHot($stake=0){
+    public function isHot(){
         $config = $this->getConfig();
         $hotValue = ($config['hotAmountPctg']/100) * 1000;
-        return $this->stakeSumFromPeriod($stake) >= $hotValue;
+        return $this->stakeSumFromPeriod() >= $hotValue;
     }
-
 
     public function tickets(){
         return $this->hasMany(Ticket::class);
