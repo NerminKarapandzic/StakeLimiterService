@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class DashboardController extends Controller
 {
     public function index(){
-        return view('dashboard')->with(['devices' => Device::paginate(10)])->with(['config' => Config::first()]);
+        return view('dashboard')->with(['devices' => Device::orderBy('restrExpiry', 'desc')->paginate(10)])->with(['config' => Config::first()]);
     }
 
     public function device(Device $device){
