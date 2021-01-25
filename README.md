@@ -23,7 +23,7 @@
     run npm install
     run php artisan serve
     
- You can test the behaviour from the dashboard, open the app in your local enviroment or try this demo: https://stake-limiter.herokuapp.com/
+ You can test the behavior from the dashboard, open the app in your local enviroment or try this demo: https://stake-limiter.herokuapp.com/
 
 
 # API documentation
@@ -96,8 +96,6 @@ For a device which has sum of stakes higher or equal {config stake limit} in the
 **Method** : `POST`
 
 **Request examples**
-
-For a device which is below all limits.
 
 ```json
 {
