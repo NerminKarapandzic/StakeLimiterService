@@ -22,6 +22,8 @@
     run php artisan key:generate
     run npm install
     run php artisan serve
+    
+ You can test the behaviour from the dashboard, open the app in your local enviroment or try this demo: https://stake-limiter.herokuapp.com/
 
 
 # API documentation
