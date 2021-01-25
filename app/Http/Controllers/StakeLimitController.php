@@ -24,7 +24,7 @@ class StakeLimitController extends Controller
         }else{
             //device is not already blocked, save the ticket for future tracking
             $this->storeTicket($ticketMessage);
-            //if not blocked, check the sum of stakes in last {config time_duraton}
+            //check the stake sum in last {config time_duraton}
             //if stake sum >= {config limit} block the device
             if($device->isAboveLimit()){
                 $device->block();
