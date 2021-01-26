@@ -57,7 +57,7 @@ class Device extends Model
 
     public function isHot(){
         $config = $this->getConfig();
-        $hotValue = ($config['hotAmountPctg']/100) * 1000;
+        $hotValue = ($config['hotAmountPctg']/100) * $config['stakeLimit'];
         return $this->stakeSumFromPeriod() >= $hotValue;
     }
 

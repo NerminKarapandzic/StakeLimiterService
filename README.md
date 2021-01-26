@@ -30,7 +30,7 @@
 
 ## Get the status for a specific device based on the global configuration.
 
-**URL** : `/api/checkLimit`
+**URL** : `/api/device/check-limits`
 
 **Method** : `POST`
 
