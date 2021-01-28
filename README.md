@@ -1,4 +1,12 @@
 # Installation Guide
+    Live demo: https://stake-limiter.herokuapp.com/
+
+## With Docker
+    Clone the repo
+    cd into project folder
+    run docker-compose up -d
+    run docker-compose run app php artisan migrate:fresh --seed
+    visit localhost:8080
 
 ## Server requirements
     PHP >= 7.2.5
@@ -22,8 +30,6 @@
     run php artisan key:generate
     run npm install
     run php artisan serve
-    
- You can test the behavior from the dashboard, open the app in your local enviroment or try this demo: https://stake-limiter.herokuapp.com/
 
 
 # API documentation
